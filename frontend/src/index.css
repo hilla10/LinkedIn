@@ -1,1 +1,24 @@
 @import 'tailwindcss';
+
+@plugin "daisyui" {
+  themes: light --default;
+}
+
+@plugin "daisyui/theme" {
+  name: 'linkedin';
+  default: true;
+
+  --color-primary: #0a66c2;
+  --color-secondary: #ffffff;
+  --color-accent: #7fc15e;
+  --color-neutral: #000000;
+  --color-base-100: oklch(96.108% 0.00402 91.462);
+  --color-info: #5e5e5e;
+  --color-success: #057642;
+  --color-warning: #f5c75d;
+  --color-error: #cc1016;
+}
+
+button {
+  @apply cursor-pointer;
+}

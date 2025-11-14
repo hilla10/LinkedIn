@@ -57,7 +57,7 @@ export const signup = async (req, res) => {
     generateToken(user, res);
 
     res
-      .status(200)
+      .status(201)
       .json({ success: true, message: 'User created successfully' });
 
     const profileUrl = `${process.env.CLIENT_URL}/profile/${user.username}`;
@@ -116,8 +116,8 @@ export const logout = async (req, res) => {
   try {
     res.clearCookie('linkedin-token', {
       httpOnly: true,
-      secure: process.env.NODE_ENV !== 'development',
-      sameSite: 'none',
+      secure: process.env.NODE_ENV === 'production', // only true in production
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
     });
     res.status(200).json({ message: 'User logged out successfully' });
   } catch (error) {
