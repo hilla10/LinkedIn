@@ -1,3 +1,4 @@
+import { sendConnectionAcceptedEmail } from '../emails/emailHandlers.js';
 import Connection from '../models/Connection.js';
 import Notification from '../models/Notification.js';
 import User from '../models/User.js';

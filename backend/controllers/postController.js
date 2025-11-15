@@ -6,7 +6,7 @@ import Post from '../models/Post.js';
 export const getFeedPosts = async (req, res) => {
   try {
     const posts = await Post.find({
-      author: { $in: req.user.connections },
+      author: { $in: [...req.user.connections, req.user._id] },
     })
       .populate('author', 'name username profilePicture headline')
       .populate('comments.user', 'name profilePicture')
@@ -76,7 +76,7 @@ export const deletePost = async (req, res) => {
       );
     }
 
-    await post.findByIdAndDelete(postId);
+    await Post.findByIdAndDelete(postId);
     res.status(200).json({ message: 'Post deleted successfully' });
   } catch (error) {
     console.log('Error in deletePost Controller', error);
@@ -120,7 +120,7 @@ export const createComment = async (req, res) => {
     ).populate('author', 'name username profilePicture headline');
 
     //   create a notification if the comment is not the post owner
-    if (post.author.toString() !== req.user._id.toString()) {
+    if (post.author._id.toString() !== req.user._id.toString()) {
       const newNotification = new Notification({
         recipient: post.author,
         type: 'comment',
@@ -140,7 +140,7 @@ export const createComment = async (req, res) => {
           content
         );
       } catch (error) {
-        console.log('Error in sending notification email: ', email);
+        console.log('Error in sending notification email: ', error);
       }
     }
 
