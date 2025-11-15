@@ -1,49 +1,35 @@
-import { Bell, Home, LogOut, User, Users } from 'lucide-react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axiosInstance from '../../lib/axios';
 import { Link } from 'react-router-dom';
+import { Bell, Home, LogOut, User, Users } from 'lucide-react';
 
 const Navbar = () => {
-  const { data: authUser } = useQuery({
-    queryKey: ['authUser'],
-  });
+  const { data: authUser } = useQuery({ queryKey: ['authUser'] });
   const queryClient = useQueryClient();
 
   const { data: notifications } = useQuery({
     queryKey: ['notifications'],
-    queryFn: async () => {
-      // API call to fetch notifications
-      const res = await axiosInstance.get('/notifications');
-      return res.data;
-    },
+    queryFn: async () => axiosInstance.get('/notifications'),
     enabled: !!authUser,
   });
 
   const { data: connectionRequests } = useQuery({
     queryKey: ['connectionRequests'],
-    queryFn: async () => {
-      // API call to fetch notifications
-      const res = await axiosInstance.get('/connections/requests');
-      return res.data;
-    },
+    queryFn: async () => axiosInstance.get('/connections/requests'),
     enabled: !!authUser,
   });
 
   const { mutate: logout } = useMutation({
-    mutationFn: async () => {
-      // API call to log out the user
-      await axiosInstance.post('/auth/logout');
-    },
+    mutationFn: () => axiosInstance.post('/auth/logout'),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['authUser'] });
     },
   });
-  const unreadNotificationCount = notifications
-    ? notifications.filter((n) => !n.read).length
-    : 0;
-  const unreadConnectionRequestsCount = connectionRequests
-    ? connectionRequests.filter((req) => req.status === 'pending').length
-    : 0;
+
+  const unreadNotificationCount = notifications?.data.filter(
+    (notif) => !notif.read
+  ).length;
+  const unreadConnectionRequestsCount = connectionRequests?.data?.length;
 
   return (
     <nav className='bg-secondary shadow-md sticky top-0 z-10'>
@@ -122,5 +108,4 @@ const Navbar = () => {
     </nav>
   );
 };
-
 export default Navbar;

@@ -22,7 +22,6 @@ const PostCreation = ({ user }) => {
     },
 
     onSuccess: () => {
-      toast.success('Post created successfully!');
       queryClient.invalidateQueries({ queryKey: ['posts'] });
       resetForm();
     },
