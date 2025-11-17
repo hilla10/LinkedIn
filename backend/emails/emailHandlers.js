@@ -55,7 +55,7 @@ export const sendCommentNotificationEmail = async (
 export const sendConnectionAcceptedEmail = async (
   senderEmail,
   senderName,
-  recipientName,
+  recipientEmail,
   profileUrl
 ) => {
   try {
