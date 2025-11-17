@@ -12,6 +12,8 @@ import connectionRouter from './routes/connectionRouter.js';
 
 dotenv.config();
 
+await connectDB();
+
 const app = express();
 
 app.use(express.json({ limit: '5mb' }));
@@ -35,6 +37,4 @@ app.use('/api/v1/connections', connectionRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
-
-  connectDB();
 });
