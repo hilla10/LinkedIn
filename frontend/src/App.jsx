@@ -9,6 +9,7 @@ import axiosInstance from './lib/axios';
 import Notification from './pages/Notification';
 import Network from './pages/Network';
 import Post from './pages/Post';
+import Profile from './pages/Profile';
 
 const App = () => {
   const { data: authUser, isLoading } = useQuery({
@@ -65,6 +66,10 @@ const App = () => {
         <Route
           path='/post/:postId'
           element={authUser ? <Post /> : <Navigate to='/login' />}
+        />
+        <Route
+          path='/profile/:username'
+          element={authUser ? <Profile /> : <Navigate to='/login' />}
         />
       </Routes>
     </Layout>
