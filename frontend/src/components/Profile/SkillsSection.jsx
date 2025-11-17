@@ -5,10 +5,13 @@ const SkillsSection = ({ userData, isOwnProfile, onSave }) => {
   const [skills, setSkills] = useState(userData.skills || []);
   const [newSkill, setNewSkill] = useState('');
 
-  const handleAddSkill = () => {
-    if (newSkill && !skills.includes(newSkill)) {
-      setSkills([...skills, newSkill]);
-      setNewSkill('');
+  const handleAddSkill = (e) => {
+    if (e.type === 'click' || e.key === 'Enter') {
+      e.preventDefault();
+      if (newSkill && !skills.includes(newSkill)) {
+        setSkills([...skills, newSkill]);
+        setNewSkill('');
+      }
     }
   };
 
@@ -44,6 +47,7 @@ const SkillsSection = ({ userData, isOwnProfile, onSave }) => {
       {isEditing && (
         <div className='mt-4 flex'>
           <input
+            onKeyDown={handleAddSkill}
             type='text'
             placeholder='New Skill'
             value={newSkill}
